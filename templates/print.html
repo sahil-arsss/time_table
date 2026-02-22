@@ -9,7 +9,7 @@ table {
 
 th, td {
     border: 1px solid black;
-    padding: 8px;
+    padding: 6px;
     text-align: center;
 }
 
@@ -24,6 +24,7 @@ th {
 <h2>{{ current_user.department }} Department Timetable</h2>
 
 {% for day in days %}
+
 <h3>{{ day }}</h3>
 
 <table>
@@ -36,7 +37,7 @@ th {
 
 {% for section in sections %}
 <tr>
-    <td><b>{{ section }}</b></td>
+    <td>{{ section }}</td>
 
     {% for period in periods %}
         <td>
@@ -45,6 +46,7 @@ th {
     {% endfor %}
 </tr>
 {% endfor %}
+
 </table>
 
 <br><br>

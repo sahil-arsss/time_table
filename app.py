@@ -100,11 +100,11 @@ def upload():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(filepath)
 
-    # Clear old timetable (optional but recommended)
+    # Clear old timetable
     Timetable.query.delete()
     db.session.commit()
 
-    # If Excel file
+    # -------- EXCEL FILE --------
     if filename.endswith(('.xlsx', '.xls')):
 
         excel_file = pd.ExcelFile(filepath)
@@ -113,37 +113,37 @@ def upload():
             df = pd.read_excel(excel_file, sheet_name=sheet)
 
             for index, row in df.iterrows():
-                day = row[0]
+                day = str(row[0]).strip()
+                section = str(row[1]).strip()
 
-                for col in df.columns[1:]:
+                for col in df.columns[2:]:  # Skip Day and Section
                     department = row[col]
 
                     entry = Timetable(
-                        day=str(day),
-                        period=str(col),
-                        room=str(sheet),
-                        department=str(department)
+                        day=day,
+                        period=str(col).strip(),
+                        room=section,
+                        department=str(department).strip()
                     )
                     db.session.add(entry)
 
-    # If CSV file
+    # -------- CSV FILE --------
     elif filename.endswith('.csv'):
 
         df = pd.read_csv(filepath)
 
-        room_name = filename.replace('.csv', '')
-
         for index, row in df.iterrows():
-            day = row[0]
+            day = str(row[0]).strip()
+            section = str(row[1]).strip()
 
-            for col in df.columns[1:]:
+            for col in df.columns[2:]:  # Skip Day and Section
                 department = row[col]
 
                 entry = Timetable(
-                    day=str(day),
-                    period=str(col),
-                    room=str(room_name),
-                    department=str(department)
+                    day=day,
+                    period=str(col).strip(),
+                    room=section,
+                    department=str(department).strip()
                 )
                 db.session.add(entry)
 
@@ -153,7 +153,6 @@ def upload():
     db.session.commit()
     flash("File uploaded successfully")
     return redirect(url_for('admin_dashboard'))
-
 # ------------------ HOD ------------------
 
 @app.route('/hod')
@@ -255,17 +254,23 @@ def edit(id):
 @login_required
 def print_view():
 
-    # Proper academic day order
     day_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
-    # Get ALL entries (not filtered)
     all_entries = Timetable.query.all()
 
-    # Unique sections and periods
+    # Unique sections
     sections = sorted(list(set([e.room for e in all_entries])))
-    periods = sorted(list(set([e.period for e in all_entries])))
 
-    # Build timetable structure
+    # Safe period sorting
+    def period_sort_key(x):
+        first_part = x.split()[0]
+        return int(first_part) if first_part.isdigit() else 0
+
+    periods = sorted(
+        list(set([e.period for e in all_entries])),
+        key=period_sort_key
+    )
+
     timetable = {}
 
     for day in day_order:
@@ -288,13 +293,12 @@ def print_view():
                     timetable[day][section][period] = f"{entry.subject} ({entry.professor})"
 
     return render_template(
-        'print.html',
+        "print.html",
         timetable=timetable,
         days=day_order,
         sections=sections,
         periods=periods
     )
-
 # ------------------ MAIN ------------------
 
 if __name__ == "__main__":
