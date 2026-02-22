@@ -83,9 +83,57 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin_dashboard():
+
     if current_user.role != 'admin':
         return "Unauthorized"
-    return render_template('admin_dashboard.html')
+
+    day_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+    all_entries = Timetable.query.all()
+
+    if not all_entries:
+        return render_template('admin_dashboard.html', timetable=None)
+
+    # Unique sections
+    sections = sorted(list(set([e.room for e in all_entries])))
+
+    # Safe period sorting
+    def period_sort_key(x):
+        first_part = x.split()[0]
+        return int(first_part) if first_part.isdigit() else 0
+
+    periods = sorted(
+        list(set([e.period for e in all_entries])),
+        key=period_sort_key
+    )
+
+    timetable = {}
+
+    for day in day_order:
+        timetable[day] = {}
+
+        for section in sections:
+            timetable[day][section] = {}
+
+            for period in periods:
+                timetable[day][section][period] = ""
+
+                entry = Timetable.query.filter_by(
+                    day=day,
+                    room=section,
+                    period=period
+                ).first()
+
+                if entry and entry.subject:
+                    timetable[day][section][period] = f"{entry.subject} ({entry.professor})"
+
+    return render_template(
+        "admin_dashboard.html",
+        timetable=timetable,
+        days=day_order,
+        sections=sections,
+        periods=periods
+    )
 
 
 @app.route('/upload', methods=['POST'])
@@ -316,7 +364,7 @@ if __name__ == "__main__":
             db.session.add(civil)
             db.session.commit()
 
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
     
     
     

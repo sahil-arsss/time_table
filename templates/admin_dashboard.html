@@ -5,7 +5,47 @@
 
 <form method="POST" action="/upload" enctype="multipart/form-data">
     <input type="file" name="file">
-    <button type="submit">Upload Excel</button>
+    <button type="submit">Upload Excel/CSV</button>
 </form>
+
+<hr>
+
+{% if timetable %}
+
+<h2>Full Updated Timetable</h2>
+
+{% for day in days %}
+
+<h3>{{ day }}</h3>
+
+<table border="1" style="border-collapse: collapse; width: 100%;">
+<tr>
+    <th>Section</th>
+    {% for period in periods %}
+        <th>{{ period }}</th>
+    {% endfor %}
+</tr>
+
+{% for section in sections %}
+<tr>
+    <td><b>{{ section }}</b></td>
+
+    {% for period in periods %}
+        <td>
+            {{ timetable[day][section][period] }}
+        </td>
+    {% endfor %}
+</tr>
+{% endfor %}
+
+</table>
+
+<br><br>
+
+{% endfor %}
+
+{% else %}
+<p>No timetable uploaded yet.</p>
+{% endif %}
 
 {% endblock %}
