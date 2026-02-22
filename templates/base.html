@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Timetable System</title>
+    <title>Timetable Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
-    <h2>Timetable Management System</h2>
-    <a href="/logout">Logout</a>
-    <hr>
+
+<div class="sidebar">
+    <h2>Timetable</h2>
+    {% if current_user.is_authenticated %}
+        {% if current_user.role == 'admin' %}
+            <a href="/admin">Dashboard</a>
+        {% else %}
+            <a href="/hod">Dashboard</a>
+        {% endif %}
+        <a href="/print">Print</a>
+        <a href="/logout">Logout</a>
+    {% endif %}
+</div>
+
+<div class="main-content">
     {% block content %}{% endblock %}
+</div>
+
 </body>
 </html>

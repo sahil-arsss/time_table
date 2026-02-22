@@ -1,22 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3>HOD Dashboard - {{ current_user.department }}</h3>
+<h2>HOD Dashboard - {{ current_user.department }}</h2>
 
-<!-- VIEW SWITCH BUTTONS -->
-<a href="/hod?view=own">
-    <button>My Department View</button>
-</a>
+<div class="view-buttons">
+    <a href="/hod?view=own"><button>My Department View</button></a>
+    <a href="/hod?view=full"><button>Full Timetable View</button></a>
+</div>
 
-<a href="/hod?view=full">
-    <button>Full Timetable View</button>
-</a>
+<a href="/print"><button>Print My Department</button></a>
 
-<br><br>
-
-<a href="/print">Print My Department</a>
-
-<table border="1">
+<div class="table-wrapper">
+<table>
 <tr>
     <th>Day</th>
     <th>Period</th>
@@ -36,27 +31,19 @@
 
     {% if entry.department == current_user.department %}
     <form method="POST" action="/edit/{{ entry.id }}">
-        <td>
-            <input name="subject" value="{{ entry.subject }}">
-        </td>
-        <td>
-            <input name="professor" value="{{ entry.professor }}">
-        </td>
-        <td>
-            <button type="submit">Save</button>
-        </td>
+        <td><input name="subject" value="{{ entry.subject }}"></td>
+        <td><input name="professor" value="{{ entry.professor }}"></td>
+        <td><button type="submit">Save</button></td>
     </form>
-
     {% else %}
-        {% if view == "full" %}
-            <td>{{ entry.subject }}</td>
-            <td>{{ entry.professor }}</td>
-            <td>View Only</td>
-        {% endif %}
+        <td>{{ entry.subject }}</td>
+        <td>{{ entry.professor }}</td>
+        <td>View Only</td>
     {% endif %}
 </tr>
 {% endfor %}
 
 </table>
+</div>
 
 {% endblock %}

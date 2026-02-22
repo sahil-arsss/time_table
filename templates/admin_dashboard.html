@@ -1,46 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3>Admin Dashboard</h3>
+<h2>Admin Dashboard</h2>
 
-<form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <button type="submit">Upload Excel/CSV</button>
-</form>
+<div style="margin-bottom:20px;">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload Excel / CSV</button>
+    </form>
+</div>
 
 <hr>
 
 {% if timetable %}
 
-<h2>Full Updated Timetable</h2>
+<h3>Full Updated Timetable</h3>
 
 {% for day in days %}
 
-<h3>{{ day }}</h3>
+<h3 style="margin-top:25px;">{{ day }}</h3>
 
-<table border="1" style="border-collapse: collapse; width: 100%;">
-<tr>
-    <th>Section</th>
-    {% for period in periods %}
-        <th>{{ period }}</th>
-    {% endfor %}
-</tr>
+<div class="table-wrapper">
+    <table>
+        <tr>
+            <th>Section</th>
+            {% for period in periods %}
+                <th>{{ period }}</th>
+            {% endfor %}
+        </tr>
 
-{% for section in sections %}
-<tr>
-    <td><b>{{ section }}</b></td>
+        {% for section in sections %}
+        <tr>
+            <td>{{ section }}</td>
 
-    {% for period in periods %}
-        <td>
-            {{ timetable[day][section][period] }}
-        </td>
-    {% endfor %}
-</tr>
-{% endfor %}
-
-</table>
-
-<br><br>
+            {% for period in periods %}
+                <td>
+                    {{ timetable[day][section][period] }}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 {% endfor %}
 
