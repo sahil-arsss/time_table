@@ -1,0 +1,11 @@
+Day,Section,1 (9:00 AM),2 (10:00 AM),3 (11:00 AM),4 (12:00 NOON),5 (01:00 PM),6 (02:00 PM),7 (03:00 PM),8 (04:00 PM)
+Monday,A,Civil,Civil,Civil,Civil,ECE,ECE,IT,CS
+Monday,B,CS,IIOT,ECE,Civil,ECE,CS,IIOT,IT
+Tuesday,A,CS,Civil,CS,ECE,IT,CS,ECE,ECE
+Tuesday,B,ECE,IIOT,Electrical,IT,IIOT,Civil,IT,IT
+Wednesday,A,Civil,Electrical,CS,ECE,CS,Electrical,CS,CS
+Wednesday,B,Electrical,ECE,CS,IT,IT,Electrical,ECE,ECE
+Thursday,A,ECE,ECE,IIOT,Civil,ECE,IT,IIOT,IIOT
+Thursday,B,ECE,IT,Civil,IIOT,Electrical,Civil,ECE,Civil
+Friday,A,Electrical,ECE,ECE,IT,CS,CS,IT,IIOT
+Friday,B,Civil,IT,Electrical,Civil,ECE,IT,Civil,Electrical

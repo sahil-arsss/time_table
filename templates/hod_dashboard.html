@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>HOD Dashboard - {{ current_user.department }}</h3>
+
+<!-- VIEW SWITCH BUTTONS -->
+<a href="/hod?view=own">
+    <button>My Department View</button>
+</a>
+
+<a href="/hod?view=full">
+    <button>Full Timetable View</button>
+</a>
+
+<br><br>
+
+<a href="/print">Print My Department</a>
+<a href="/download_pdf">
+    <button>Download PDF</button>
+</a>
+<table border="1">
+<tr>
+    <th>Day</th>
+    <th>Period</th>
+    <th>Room</th>
+    <th>Department</th>
+    <th>Subject</th>
+    <th>Professor</th>
+    <th>Action</th>
+</tr>
+
+{% for entry in entries %}
+<tr>
+    <td>{{ entry.day }}</td>
+    <td>{{ entry.period }}</td>
+    <td>{{ entry.room }}</td>
+    <td>{{ entry.department }}</td>
+
+    {% if entry.department == current_user.department %}
+    <form method="POST" action="/edit/{{ entry.id }}">
+        <td>
+            <input name="subject" value="{{ entry.subject }}">
+        </td>
+        <td>
+            <input name="professor" value="{{ entry.professor }}">
+        </td>
+        <td>
+            <button type="submit">Save</button>
+        </td>
+    </form>
+
+    {% else %}
+        {% if view == "full" %}
+            <td>{{ entry.subject }}</td>
+            <td>{{ entry.professor }}</td>
+            <td>View Only</td>
+        {% endif %}
+    {% endif %}
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

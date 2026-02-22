@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+</style>
+</head>
+
+<body onload="window.print()">
+
+<h2>{{ current_user.department }} Department Timetable</h2>
+
+{% for day in days %}
+<h3>{{ day }}</h3>
+
+<table>
+<tr>
+    <th>Section</th>
+    {% for period in periods %}
+        <th>{{ period }}</th>
+    {% endfor %}
+</tr>
+
+{% for section in sections %}
+<tr>
+    <td><b>{{ section }}</b></td>
+
+    {% for period in periods %}
+        <td>
+            {{ timetable[day][section][period] }}
+        </td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+<br><br>
+
+{% endfor %}
+
+</body>
+</html>
