@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login Page</title>
 </head>
-<body>
+<body style="margin:0; padding:0; height:100vh; display:flex; justify-content:center; align-items:center; background:linear-gradient(135deg, #4e73df, #1cc88a); font-family:'Segoe UI', sans-serif;">
 
-<div class="login-container">
-    <h2>Login</h2>
+    <div style="background:white; padding:40px 30px; width:350px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2); text-align:center;">
 
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username"><br>
-        <input type="password" name="password" placeholder="Password"><br><br>
-        <button type="submit">Login</button>
-    </form>
-</div>
+        <h2 style="margin-bottom:10px; color:#333;">Welcome Back</h2>
+        <p style="margin-bottom:30px; color:#777; font-size:14px;">Please login to continue</p>
+
+        <form method="POST">
+
+            <input type="text" name="username" placeholder="Username" required
+                style="width:100%; padding:12px; margin-bottom:20px; border:none; border-bottom:2px solid #ccc; outline:none; font-size:16px;">
+
+            <input type="password" name="password" placeholder="Password" required
+                style="width:100%; padding:12px; margin-bottom:25px; border:none; border-bottom:2px solid #ccc; outline:none; font-size:16px;">
+
+            <button type="submit"
+                style="width:100%; padding:12px; background:#4e73df; border:none; border-radius:6px; color:white; font-size:16px; cursor:pointer; transition:0.3s;"
+                onmouseover="this.style.background='#2e59d9'; this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.background='#4e73df'; this.style.transform='translateY(0)'">
+                Login
+            </button>
+
+        </form>
+
+    </div>
 
 </body>
 </html>
